@@ -75,7 +75,7 @@ public class CorrectAnswerFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Button b = (Button) getView().findViewById(R.id.cor_continue_button);
+        Button b = (Button) getView().findViewById(R.id.inc_continue_button2);
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

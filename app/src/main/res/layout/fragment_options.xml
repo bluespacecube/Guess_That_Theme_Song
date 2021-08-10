@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:background="#368881"
+        android:background="@color/main_color"
         android:orientation="vertical"
         android:visibility="visible">
 
@@ -29,7 +29,8 @@
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:max="10" />
+            android:max="10"
+            android:progressTint="@color/purple_700" />
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"

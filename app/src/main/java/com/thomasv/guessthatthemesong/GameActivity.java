@@ -31,8 +31,9 @@ public class GameActivity extends AppCompatActivity implements OptionsFragment.O
 
     //Loads all questions
     private void loadQuestions(){
-        questionsList.add(new Question(new String[] {"answer1", "answer2", "answer3", "answer4"}, "yes", "answer4"));
-        questionsList.add(new Question(new String[] {"xanswer1", "xanswer2", "xanswer3", "xanswer4"}, "no", "xanswer4"));
+        questionsList.add(new Question(new String[] {"Sample Answer 1", "Sample Answer 2", "Sample Answer 3", "Sample Answer 4"}, "yes", "Sample Answer " +
+                "4"));
+        questionsList.add(new Question(new String[] {"Sample Answer 1", "Sample Answer 2", "Sample Answer 3", "Sample Answer 4"}, "no", "Sample Answer 4"));
     }
 
     //Starts the game

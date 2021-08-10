@@ -12,24 +12,26 @@
         android:id="@+id/start_ll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:gravity="center"
         android:orientation="vertical">
-
-        <Button
-            android:id="@+id/start_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:onClick="startOnClick"
-            android:text="Start!" />
 
         <TextView
             android:id="@+id/textView2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Listen to the sound cllips and choose the right show! But remember you only have 10 seconds!"
+            android:text="Listen to the sound clips and choose the right show! But remember you only have 10 seconds!"
             android:textAlignment="center"
             android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/start_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:backgroundTint="@color/main_color"
+            android:onClick="startOnClick"
+            android:text="Start!" />
     </LinearLayout>
 
     <FrameLayout

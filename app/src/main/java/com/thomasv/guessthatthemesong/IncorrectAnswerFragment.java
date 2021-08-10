@@ -97,8 +97,8 @@ public class IncorrectAnswerFragment extends Fragment {
     }
 
     public void setAnswer(String answer){
-        TextView tv = getView().findViewById(R.id.inc_answer_textview2);
-        tv.setText("Incorrect! The answer was " + answer);
+        TextView tv = getView().findViewById(R.id.finish_textview2);
+        tv.setText("The answer was " + answer);
     }
 
 }
