@@ -10,6 +10,11 @@
         <entry key="app/src/main/res/layout/correct_answer_screen.xml" value="0.2033514492753623" />
         <entry key="app/src/main/res/layout/finish_screen.xml" value="0.2033514492753623" />
         <entry key="app/src/main/res/layout/fragment_blank.xml" value="0.2033514492753623" />
+        <entry key="app/src/main/res/layout/fragment_correct_answer.xml" value="0.2033514492753623" />
+        <entry key="app/src/main/res/layout/fragment_finish.xml" value="0.2033514492753623" />
+        <entry key="app/src/main/res/layout/fragment_incorrect_answer.xml" value="0.2033514492753623" />
+        <entry key="app/src/main/res/layout/fragment_music.xml" value="0.2033514492753623" />
+        <entry key="app/src/main/res/layout/fragment_options.xml" value="0.2033514492753623" />
         <entry key="app/src/main/res/layout/incorrect_answer_screen.xml" value="0.2033514492753623" />
         <entry key="app/src/main/res/layout/music_screen.xml" value="0.1887031408308004" />
         <entry key="app/src/main/res/layout/question_screen.xml" value="0.2033514492753623" />

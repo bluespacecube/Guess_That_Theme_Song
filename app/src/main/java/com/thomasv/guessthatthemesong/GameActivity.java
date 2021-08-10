@@ -1,6 +1,7 @@
 package com.thomasv.guessthatthemesong;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -14,7 +15,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class GameActivity extends AppCompatActivity {
+public class GameActivity extends AppCompatActivity implements OptionsFragment.OnOptionClickedListener, IncorrectAnswerFragment.ContinueClickListener, CorrectAnswerFragment.ContinueClickListener{
 
     private ArrayList<Question> questionsList = new ArrayList<>();
     private int questionNum = 1;
@@ -38,13 +39,15 @@ public class GameActivity extends AppCompatActivity {
     private void start(){
         System.out.println("------------------- Game Started ------------------");
         loadQuestions();
+        LinearLayout startll = (LinearLayout) findViewById(R.id.start_ll);
+        startll.setVisibility(View.GONE);
         playQuestion();
     }
 
     private void playQuestion(){
-        LinearLayout constL = findViewById(R.id.Lconst_layout);
-        constL.removeAllViews();
-        constL.addView(LayoutInflater.from(getApplication()).inflate(R.layout.music_screen, null));
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.frame_lay, new MusicFragment(), "MUSIC_FRAGMENT");
+        ft.commit();
         System.out.println("------------------- Question Started ------------------");
         String soundFileName = questionsList.get(questionNum-1).getSongFileName();
         MediaPlayer mp = MediaPlayer.create(getApplicationContext(), getResources().getIdentifier(soundFileName, "raw", "com.thomasv.guessthatthemesong"));
@@ -60,83 +63,67 @@ public class GameActivity extends AppCompatActivity {
     //Display the answer options
     private void displayAnswers(){
         displayingChoices = true;
-        LinearLayout constL = findViewById(R.id.Lconst_layout);
-        constL.removeAllViews();
-        LinearLayout qConstL = (LinearLayout) LayoutInflater.from(getApplicationContext()).inflate(R.layout.question_screen, null);
-        Button q1Button = qConstL.findViewById(R.id.answer1_button);
-        Button q2Button = qConstL.findViewById(R.id.answer2_button);
-        Button q3Button = qConstL.findViewById(R.id.answer3_button);
-        Button q4Button = qConstL.findViewById(R.id.answer4_button);
-        q1Button.setText(questionsList.get(questionNum-1).getAnswerChoices()[0]);
-        q2Button.setText(questionsList.get(questionNum-1).getAnswerChoices()[1]);
-        q3Button.setText(questionsList.get(questionNum-1).getAnswerChoices()[2]);
-        q4Button.setText(questionsList.get(questionNum-1).getAnswerChoices()[3]);
-        q1Button.setOnClickListener(checkAnswer);
-        q2Button.setOnClickListener(checkAnswer);
-        q3Button.setOnClickListener(checkAnswer);
-        q4Button.setOnClickListener(checkAnswer);
-        constL.addView(qConstL);
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        OptionsFragment optionsFragment = OptionsFragment.newInstance(questionsList.get(questionNum-1).getAnswerChoices());
+        ft.replace(R.id.frame_lay, optionsFragment, "OPTIONS_FRAGMENT");
+        ft.commit();
         new CountDownTimer(10000,1000){
             public void onTick(long milisUntillFinished){
-                ProgressBar pb = qConstL.findViewById(R.id.progressBar);
-                pb.setProgress((10000 - (int) milisUntillFinished) / 1000);
+                if(displayingChoices){
+                    OptionsFragment optionsFragment = (OptionsFragment) getSupportFragmentManager().findFragmentByTag("OPTIONS_FRAGMENT");
+                    optionsFragment.setProgressBar((10000 - (int) milisUntillFinished) / 1000);
+                }
             }
 
             @Override
             public void onFinish() {
                 if(displayingChoices){
-                    constL.removeAllViews();
-                    LinearLayout answerConstL = (LinearLayout) LayoutInflater.from(getApplicationContext()).inflate(R.layout.incorrect_answer_screen, null);
-                    TextView tv = answerConstL.findViewById(R.id.inc_answer_textview);
-                    tv.setText("Time Up! !he answer was " + questionsList.get(questionNum-1).getCorrectAnswer());
-                    answerConstL.findViewById(R.id.inc_continue_button).setOnClickListener(onAnswerScreenClick);
-                    constL.addView(answerConstL);
+                    displayingChoices = true;
+                    getSupportFragmentManager().beginTransaction().replace(R.id.frame_lay, new IncorrectAnswerFragment(), "INCORRECT_ANSWER_FRAGMENT").commit();
+                    getSupportFragmentManager().executePendingTransactions();
+                    IncorrectAnswerFragment incorrectAnswerFragment = (IncorrectAnswerFragment) getSupportFragmentManager().findFragmentByTag("INCORRECT_ANSWER_FRAGMENT");
+                    incorrectAnswerFragment.setAnswer(questionsList.get(questionNum-1).getCorrectAnswer());
                     displayingChoices = false;
                 }
             }
         }.start();
     }
 
-    private View.OnClickListener checkAnswer = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) { ;
+    @Override
+    public void OnOptionClicked(String option) {
         displayingChoices = false;
-            Button answerButton = (Button) view;
-            LinearLayout constL = findViewById(R.id.Lconst_layout);
-            constL.removeAllViews();
-            if(answerButton.getText() == questionsList.get(questionNum-1).getCorrectAnswer()){
-                LinearLayout answerConstL = (LinearLayout) LayoutInflater.from(getApplicationContext()).inflate(R.layout.correct_answer_screen, null);
-                answerConstL.findViewById(R.id.cor_continue_button).setOnClickListener(onAnswerScreenClick);
-                constL.addView(answerConstL);
-                score += 10;
-            }else{
-                LinearLayout answerConstL = (LinearLayout) LayoutInflater.from(getApplicationContext()).inflate(R.layout.incorrect_answer_screen, null);
-                TextView tv = answerConstL.findViewById(R.id.inc_answer_textview);
-                tv.setText("Incorrect! !he answer was " + questionsList.get(questionNum-1).getCorrectAnswer());
-                answerConstL.findViewById(R.id.inc_continue_button).setOnClickListener(onAnswerScreenClick);
-                constL.addView(answerConstL);
-            }
+        if(option == questionsList.get(questionNum-1).getCorrectAnswer()){
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.frame_lay, new CorrectAnswerFragment(), "CORRECT_ANSWER_FRAGMENT");
+            ft.commit();
+            score += 10;
+        }else{
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.frame_lay, new IncorrectAnswerFragment(), "INCORRECT_ANSWER_FRAGMENT");
+            ft.commit();
+            getSupportFragmentManager().executePendingTransactions();
+            IncorrectAnswerFragment incorrectAnswerFragment = (IncorrectAnswerFragment) getSupportFragmentManager().findFragmentByTag("INCORRECT_ANSWER_FRAGMENT");
+            incorrectAnswerFragment.setAnswer(questionsList.get(questionNum-1).getCorrectAnswer());
         }
-    };
-
-    private View.OnClickListener onAnswerScreenClick = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            if(questionNum != questionsList.size()){
-                questionNum += 1;
-                playQuestion();
-            }else{
-                LinearLayout constL = findViewById(R.id.Lconst_layout);
-                constL.removeAllViews();
-                LinearLayout finishConstL = (LinearLayout) LayoutInflater.from(getApplicationContext()).inflate(R.layout.finish_screen, null);
-                TextView tv = finishConstL.findViewById(R.id.finish_textview);
-                tv.setText("Your score was" + score);
-                constL.addView(finishConstL);
-            }
-        }
-    };
+    }
 
     public void startOnClick(View view) {
         start();
     }
+
+    @Override
+    public void OnContinueClicked() {
+        if(questionNum != questionsList.size()){
+            questionNum += 1;
+            playQuestion();
+        }else{
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.frame_lay, new FinishFragment(), "FINISH_FRAGMENT");
+            ft.commit();
+            getSupportFragmentManager().executePendingTransactions();
+            FinishFragment finishFragment = (FinishFragment) getSupportFragmentManager().findFragmentByTag("FINISH_FRAGMENT");
+            finishFragment.setScore(score);
+        }
+    }
+
 }
