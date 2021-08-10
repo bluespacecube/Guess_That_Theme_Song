@@ -3,6 +3,8 @@ package com.thomasv.guessthatthemesong;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -21,12 +23,20 @@ public class GameActivity extends AppCompatActivity implements OptionsFragment.O
     private int questionNum = 1;
     private int score;
     private boolean displayingChoices = false;
+    private MediaPlayer mp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_game);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        releaseMusicPlayer();
+        this.onBackPressed();
     }
 
     //Loads all questions
@@ -51,7 +61,7 @@ public class GameActivity extends AppCompatActivity implements OptionsFragment.O
         ft.commit();
         System.out.println("------------------- Question Started ------------------");
         String soundFileName = questionsList.get(questionNum-1).getSongFileName();
-        MediaPlayer mp = MediaPlayer.create(getApplicationContext(), getResources().getIdentifier(soundFileName, "raw", "com.thomasv.guessthatthemesong"));
+        mp = MediaPlayer.create(getApplicationContext(), getResources().getIdentifier(soundFileName, "raw", "com.thomasv.guessthatthemesong"));
         mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mediaPlayer) {
@@ -125,6 +135,11 @@ public class GameActivity extends AppCompatActivity implements OptionsFragment.O
             FinishFragment finishFragment = (FinishFragment) getSupportFragmentManager().findFragmentByTag("FINISH_FRAGMENT");
             finishFragment.setScore(score);
         }
+    }
+
+    private void releaseMusicPlayer(){
+        mp.stop();
+        mp.release();
     }
 
 }
