@@ -108,4 +108,10 @@ public class OptionsFragment extends Fragment {
         ProgressBar pb = getView().findViewById(R.id.progressBar);
         pb.setProgress(amount);
     }
+
+    public int[] getProgressBarProgress(){
+        ProgressBar pb = getView().findViewById(R.id.progressBar);
+        return new int[] {pb.getProgress(), pb.getMax()};
+    }
+
 }

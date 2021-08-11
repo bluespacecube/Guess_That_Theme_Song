@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".OptionsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -20,9 +19,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            android:src="@mipmap/question_mark_foreground"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/outline_help_center_black_48dp" />
 
         <ProgressBar
             android:id="@+id/progressBar"

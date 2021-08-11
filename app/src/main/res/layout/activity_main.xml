@@ -5,13 +5,23 @@
     android:id="@+id/lin"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/main_color"
+    android:gravity="center"
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Click start to play!"
+        app:srcCompat="@drawable/television_classic_icon_138108" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Guess That Theme Song"
+        android:textAlignment="center"
+        android:textSize="34sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -19,10 +29,14 @@
 
     <Button
         android:id="@+id/button"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:backgroundTint="@color/purple_700"
         android:onClick="buttonClick"
         android:text="Play!"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
         tools:layout_editor_absoluteX="65dp"
         tools:layout_editor_absoluteY="203dp" />
 
@@ -33,6 +47,6 @@
         android:layout_weight="0"
         android:onClick="b"
         android:text="Button"
-        android:visibility="visible" />
+        android:visibility="gone" />
 
 </LinearLayout>

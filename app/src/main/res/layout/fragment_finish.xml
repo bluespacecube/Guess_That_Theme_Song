@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            app:srcCompat="@drawable/outline_task_alt_black_48dp" />
+            app:srcCompat="@drawable/outline_grade_black_48dp" />
 
         <androidx.cardview.widget.CardView
             app:cardCornerRadius="8dp"

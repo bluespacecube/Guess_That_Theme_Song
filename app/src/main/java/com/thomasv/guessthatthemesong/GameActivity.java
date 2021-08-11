@@ -24,6 +24,7 @@ public class GameActivity extends AppCompatActivity implements OptionsFragment.O
     private int score;
     private boolean displayingChoices = false;
     private MediaPlayer mp;
+    private CountDownTimer cdt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,9 +42,8 @@ public class GameActivity extends AppCompatActivity implements OptionsFragment.O
 
     //Loads all questions
     private void loadQuestions(){
-        questionsList.add(new Question(new String[] {"Sample Answer 1", "Sample Answer 2", "Sample Answer 3", "Sample Answer 4"}, "yes", "Sample Answer " +
-                "4"));
-        questionsList.add(new Question(new String[] {"Sample Answer 1", "Sample Answer 2", "Sample Answer 3", "Sample Answer 4"}, "no", "Sample Answer 4"));
+        questionsList.add(new Question(new String[] {"Channel 4 News", "Channel 5 News", "ITV News", "BBC News"}, "bbcnews", "BBC News"));
+        questionsList.add(new Question(new String[] {"Family Guy", "The Simpsons", "Rick And Morty", "South Park"}, "thesimpsonsopening", "The Simpsons"));
     }
 
     //Starts the game
@@ -78,11 +78,15 @@ public class GameActivity extends AppCompatActivity implements OptionsFragment.O
         OptionsFragment optionsFragment = OptionsFragment.newInstance(questionsList.get(questionNum-1).getAnswerChoices());
         ft.replace(R.id.frame_lay, optionsFragment, "OPTIONS_FRAGMENT");
         ft.commit();
-        new CountDownTimer(10000,1000){
+
+        cdt = new CountDownTimer(10000,1000){
             public void onTick(long milisUntillFinished){
                 if(displayingChoices){
                     OptionsFragment optionsFragment = (OptionsFragment) getSupportFragmentManager().findFragmentByTag("OPTIONS_FRAGMENT");
                     optionsFragment.setProgressBar((10000 - (int) milisUntillFinished) / 1000);
+                    System.out.println("Question" + questionNum + " " + optionsFragment.getProgressBarProgress()[0] + " " + optionsFragment.getProgressBarProgress()[1]);
+                    System.out.println("y" + (10000 - (int) milisUntillFinished) / 1000);
+                    System.out.println("spg:" + (int) milisUntillFinished + " " + milisUntillFinished);
                 }
             }
 
@@ -97,12 +101,14 @@ public class GameActivity extends AppCompatActivity implements OptionsFragment.O
                     displayingChoices = false;
                 }
             }
-        }.start();
+        };
+        cdt.start();
     }
 
     @Override
     public void OnOptionClicked(String option) {
         displayingChoices = false;
+        cdt.cancel();
         if(option == questionsList.get(questionNum-1).getCorrectAnswer()){
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.frame_lay, new CorrectAnswerFragment(), "CORRECT_ANSWER_FRAGMENT");
