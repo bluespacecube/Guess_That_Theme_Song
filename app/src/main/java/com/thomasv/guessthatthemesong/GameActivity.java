@@ -42,8 +42,8 @@ public class GameActivity extends AppCompatActivity implements OptionsFragment.O
 
     //Loads all questions
     private void loadQuestions(){
-        questionsList.add(new Question(new String[] {"Channel 4 News", "Channel 5 News", "ITV News", "BBC News"}, "bbcnews", "BBC News"));
-        questionsList.add(new Question(new String[] {"Family Guy", "The Simpsons", "Rick And Morty", "South Park"}, "thesimpsonsopening", "The Simpsons"));
+        questionsList.add(new Question(new String[] {"Channel 4 News", "Channel 5 News", "ITV News", "BBC News"}, "bbcnews", 3));
+        questionsList.add(new Question(new String[] {"Family Guy", "The Simpsons", "Rick And Morty", "South Park"}, "thesimpsonsopening", 1));
     }
 
     //Starts the game
@@ -97,7 +97,7 @@ public class GameActivity extends AppCompatActivity implements OptionsFragment.O
                     getSupportFragmentManager().beginTransaction().replace(R.id.frame_lay, new IncorrectAnswerFragment(), "INCORRECT_ANSWER_FRAGMENT").commit();
                     getSupportFragmentManager().executePendingTransactions();
                     IncorrectAnswerFragment incorrectAnswerFragment = (IncorrectAnswerFragment) getSupportFragmentManager().findFragmentByTag("INCORRECT_ANSWER_FRAGMENT");
-                    incorrectAnswerFragment.setAnswer(questionsList.get(questionNum-1).getCorrectAnswer());
+                    incorrectAnswerFragment.setAnswer(questionsList.get(questionNum-1).getAnswerChoices()[questionsList.get(questionNum-1).getCorrectAnswerPos()]);
                     displayingChoices = false;
                 }
             }
@@ -109,7 +109,7 @@ public class GameActivity extends AppCompatActivity implements OptionsFragment.O
     public void OnOptionClicked(String option) {
         displayingChoices = false;
         cdt.cancel();
-        if(option == questionsList.get(questionNum-1).getCorrectAnswer()){
+        if(option == questionsList.get(questionNum-1).getAnswerChoices()[questionsList.get(questionNum-1).getCorrectAnswerPos()]){
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.frame_lay, new CorrectAnswerFragment(), "CORRECT_ANSWER_FRAGMENT");
             ft.commit();
@@ -120,7 +120,7 @@ public class GameActivity extends AppCompatActivity implements OptionsFragment.O
             ft.commit();
             getSupportFragmentManager().executePendingTransactions();
             IncorrectAnswerFragment incorrectAnswerFragment = (IncorrectAnswerFragment) getSupportFragmentManager().findFragmentByTag("INCORRECT_ANSWER_FRAGMENT");
-            incorrectAnswerFragment.setAnswer(questionsList.get(questionNum-1).getCorrectAnswer());
+            incorrectAnswerFragment.setAnswer(questionsList.get(questionNum-1).getAnswerChoices()[questionsList.get(questionNum-1).getCorrectAnswerPos()]);
         }
     }
 

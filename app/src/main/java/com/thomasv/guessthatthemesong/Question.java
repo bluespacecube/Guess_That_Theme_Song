@@ -3,20 +3,20 @@ package com.thomasv.guessthatthemesong;
 public class Question {
     private String[] answerChoices;
     private String songFileName;
-    private String correctAnswer;
+    private int correctAnswerPos;
 
-    public Question(String[] answerChoices, String songFileName, String correctAnswer){
+    public Question(String[] answerChoices, String songFileName, int correctAnswerPos){
         this.answerChoices = answerChoices;
         this.songFileName = songFileName;
-        this.correctAnswer = correctAnswer;
+        this.correctAnswerPos = correctAnswerPos;
     }
 
     public String[] getAnswerChoices(){
         return answerChoices;
     }
 
-    public String getCorrectAnswer(){
-        return correctAnswer;
+    public int getCorrectAnswerPos(){
+        return correctAnswerPos;
     }
 
     public String getSongFileName(){
