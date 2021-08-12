@@ -84,9 +84,11 @@ public class CorrectAnswerFragment extends Fragment {
         });
     }
 
+    //called once the fragment is associated with its activity
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        //check if Activity has implemented the OnOptionClicked listener
         if (context instanceof CorrectAnswerFragment.ContinueClickListener) {
             listener = (CorrectAnswerFragment.ContinueClickListener) context;
         } else {

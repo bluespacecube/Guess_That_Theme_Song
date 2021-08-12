@@ -45,7 +45,7 @@
                     tools:layout_editor_absoluteY="43dp" />
 
                 <TextView
-                    android:id="@+id/finish_textview2"
+                    android:id="@+id/answer_textview2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textAlignment="center"

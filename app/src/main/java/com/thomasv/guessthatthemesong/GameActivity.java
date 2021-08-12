@@ -55,14 +55,18 @@ public class GameActivity extends AppCompatActivity implements OptionsFragment.O
         playQuestion();
     }
 
+    //Plays a theme song for the user to guess
     private void playQuestion(){
+        //load question music playing fragment
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.frame_lay, new MusicFragment(), "MUSIC_FRAGMENT");
         ft.commit();
         System.out.println("------------------- Question Started ------------------");
         String soundFileName = questionsList.get(questionNum-1).getSongFileName();
+        //play the music
         mp = MediaPlayer.create(getApplicationContext(), getResources().getIdentifier(soundFileName, "raw", "com.thomasv.guessthatthemesong"));
         mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            //called when the music has finished playing
             @Override
             public void onCompletion(MediaPlayer mediaPlayer) {
                 displayAnswers();
@@ -74,32 +78,32 @@ public class GameActivity extends AppCompatActivity implements OptionsFragment.O
     //Display the answer options
     private void displayAnswers(){
         displayingChoices = true;
+        //display multiple choices fragment
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         OptionsFragment optionsFragment = OptionsFragment.newInstance(questionsList.get(questionNum-1).getAnswerChoices());
         ft.replace(R.id.frame_lay, optionsFragment, "OPTIONS_FRAGMENT");
         ft.commit();
-
+        //start a countdown timer for choosing an option
         cdt = new CountDownTimer(10000,1000){
             public void onTick(long milisUntillFinished){
-                if(displayingChoices){
-                    OptionsFragment optionsFragment = (OptionsFragment) getSupportFragmentManager().findFragmentByTag("OPTIONS_FRAGMENT");
-                    optionsFragment.setProgressBar((10000 - (int) milisUntillFinished) / 1000);
-                    System.out.println("Question" + questionNum + " " + optionsFragment.getProgressBarProgress()[0] + " " + optionsFragment.getProgressBarProgress()[1]);
-                    System.out.println("y" + (10000 - (int) milisUntillFinished) / 1000);
-                    System.out.println("spg:" + (int) milisUntillFinished + " " + milisUntillFinished);
-                }
+                //make a reference for the fragment
+                OptionsFragment optionsFragment = (OptionsFragment) getSupportFragmentManager().findFragmentByTag("OPTIONS_FRAGMENT");
+                //update its progress bar progress
+                optionsFragment.setProgressBar((10000 - (int) milisUntillFinished) / 1000);
             }
 
             @Override
             public void onFinish() {
-                if(displayingChoices){
-                    displayingChoices = true;
-                    getSupportFragmentManager().beginTransaction().replace(R.id.frame_lay, new IncorrectAnswerFragment(), "INCORRECT_ANSWER_FRAGMENT").commit();
-                    getSupportFragmentManager().executePendingTransactions();
-                    IncorrectAnswerFragment incorrectAnswerFragment = (IncorrectAnswerFragment) getSupportFragmentManager().findFragmentByTag("INCORRECT_ANSWER_FRAGMENT");
-                    incorrectAnswerFragment.setAnswer(questionsList.get(questionNum-1).getAnswerChoices()[questionsList.get(questionNum-1).getCorrectAnswerPos()]);
-                    displayingChoices = false;
-                }
+                //display incorrect answer fragment
+                getSupportFragmentManager().beginTransaction().replace(R.id.frame_lay, new IncorrectAnswerFragment(), "INCORRECT_ANSWER_FRAGMENT").commit();
+                getSupportFragmentManager().executePendingTransactions();
+                //make a reference for the fragment
+                IncorrectAnswerFragment incorrectAnswerFragment = (IncorrectAnswerFragment) getSupportFragmentManager().findFragmentByTag("INCORRECT_ANSWER_FRAGMENT");
+                //display the answer to the user
+                incorrectAnswerFragment.setAnswer(questionsList.get(questionNum-1).getAnswerChoices()[questionsList.get(questionNum-1).getCorrectAnswerPos()]);
+                //set the title to "Times Up!"
+                incorrectAnswerFragment.setToTimeUp();
+
             }
         };
         cdt.start();
@@ -107,38 +111,51 @@ public class GameActivity extends AppCompatActivity implements OptionsFragment.O
 
     @Override
     public void OnOptionClicked(String option) {
-        displayingChoices = false;
+        //cancel timer
         cdt.cancel();
+        //check if the answer selected is correct (via the buttons text)
         if(option == questionsList.get(questionNum-1).getAnswerChoices()[questionsList.get(questionNum-1).getCorrectAnswerPos()]){
+            //display correct answer fragment
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.frame_lay, new CorrectAnswerFragment(), "CORRECT_ANSWER_FRAGMENT");
             ft.commit();
+            //increment score
             score += 10;
         }else{
+            //display incorrect answer fragment
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.frame_lay, new IncorrectAnswerFragment(), "INCORRECT_ANSWER_FRAGMENT");
             ft.commit();
             getSupportFragmentManager().executePendingTransactions();
+            //make a reference for the fragment
             IncorrectAnswerFragment incorrectAnswerFragment = (IncorrectAnswerFragment) getSupportFragmentManager().findFragmentByTag("INCORRECT_ANSWER_FRAGMENT");
+            //add the correct answer to the fragment
             incorrectAnswerFragment.setAnswer(questionsList.get(questionNum-1).getAnswerChoices()[questionsList.get(questionNum-1).getCorrectAnswerPos()]);
         }
     }
 
+    //OnButtonClick for the start button
     public void startOnClick(View view) {
+        //start the game
         start();
     }
 
+    //OnButtonClick for the continue button
     @Override
     public void OnContinueClicked() {
+        //if game is not on the last question update current question number and do the next one
         if(questionNum != questionsList.size()){
             questionNum += 1;
             playQuestion();
         }else{
+            //load the finish fragment
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.frame_lay, new FinishFragment(), "FINISH_FRAGMENT");
             ft.commit();
             getSupportFragmentManager().executePendingTransactions();
+            //make a reference for the fragment
             FinishFragment finishFragment = (FinishFragment) getSupportFragmentManager().findFragmentByTag("FINISH_FRAGMENT");
+            //add the score to the fragment
             finishFragment.setScore(score);
         }
     }

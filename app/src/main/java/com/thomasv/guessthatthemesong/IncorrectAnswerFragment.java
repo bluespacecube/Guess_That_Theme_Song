@@ -85,9 +85,11 @@ public class IncorrectAnswerFragment extends Fragment {
         });
     }
 
+    //called once the fragment is associated with its activity
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        //check if Activity has implemented the OnOptionClicked listener
         if (context instanceof ContinueClickListener) {
             listener = (ContinueClickListener) context;
         } else {
@@ -97,8 +99,13 @@ public class IncorrectAnswerFragment extends Fragment {
     }
 
     public void setAnswer(String answer){
-        TextView tv = getView().findViewById(R.id.finish_textview2);
+        TextView tv = getView().findViewById(R.id.answer_textview2);
         tv.setText("The answer was " + answer);
+    }
+
+    public void setToTimeUp(){
+        TextView tv = getView().findViewById(R.id.inc_answer_textview3);
+        tv.setText("Time Up!");
     }
 
 }

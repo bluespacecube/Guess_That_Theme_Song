@@ -5,6 +5,7 @@ public class Question {
     private String songFileName;
     private int correctAnswerPos;
 
+    //constructor
     public Question(String[] answerChoices, String songFileName, int correctAnswerPos){
         this.answerChoices = answerChoices;
         this.songFileName = songFileName;

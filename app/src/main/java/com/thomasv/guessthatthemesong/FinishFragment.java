@@ -64,7 +64,7 @@ public class FinishFragment extends Fragment {
     }
 
     public void setScore(int score){
-        TextView tv = getView().findViewById(R.id.finish_textview2);
+        TextView tv = getView().findViewById(R.id.answer_textview2);
         tv.setText("You scored " + score);
     }
 }

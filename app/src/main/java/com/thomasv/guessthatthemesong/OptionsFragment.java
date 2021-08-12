@@ -84,9 +84,11 @@ public class OptionsFragment extends Fragment {
         optionb4.setText(options[3]);
     }
 
+    //called once the fragment is associated with its activity
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        //check if Activity has implemented the OnOptionClicked listener
         if (context instanceof OptionsFragment.OnOptionClickedListener) {
             listener = (OptionsFragment.OnOptionClickedListener) context;
         } else {
@@ -95,11 +97,14 @@ public class OptionsFragment extends Fragment {
         }
     }
 
+    //OnClickListener for the option buttons
     View.OnClickListener optionClicked = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             Button b = (Button) view;
+            //get button text
             String buttonText = b.getText().toString();
+            //send event to OnOptionClicked listener
             listener.OnOptionClicked(buttonText);
         }
     };
