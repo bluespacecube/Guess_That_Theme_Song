@@ -13,6 +13,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link OptionsFragment#newInstance} factory method to
@@ -77,11 +81,12 @@ public class OptionsFragment extends Fragment {
         optionb2.setOnClickListener(optionClicked);
         optionb3.setOnClickListener(optionClicked);
         optionb4.setOnClickListener(optionClicked);
-        String[] options = getArguments().getStringArray(ARG_PARAM);
-        optionb1.setText(options[0]);
-        optionb2.setText(options[1]);
-        optionb3.setText(options[2]);
-        optionb4.setText(options[3]);
+        List<String> options = Arrays.asList(getArguments().getStringArray(ARG_PARAM));
+        Collections.shuffle(options);
+        optionb1.setText(options.get(0));
+        optionb2.setText(options.get(1));
+        optionb3.setText(options.get(2));
+        optionb4.setText(options.get(3));
     }
 
     //called once the fragment is associated with its activity
