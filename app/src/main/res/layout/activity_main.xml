@@ -47,6 +47,6 @@
         android:layout_weight="0"
         android:onClick="b"
         android:text="Button"
-        android:visibility="gone" />
+        android:visibility="visible" />
 
 </LinearLayout>

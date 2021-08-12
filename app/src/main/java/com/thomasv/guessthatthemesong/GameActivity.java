@@ -70,6 +70,22 @@ public class GameActivity extends AppCompatActivity implements OptionsFragment.O
                 displayAnswers();
             }
         });
+        getSupportFragmentManager().executePendingTransactions();
+        MusicFragment musicFragment = (MusicFragment) getSupportFragmentManager().findFragmentByTag("MUSIC_FRAGMENT");
+        int musicDuration = mp.getDuration();
+        musicFragment.setProgressBarMax(musicDuration);
+        new CountDownTimer(musicDuration, 1000){
+
+            @Override
+            public void onTick(long l) {
+                musicFragment.setProgressBar(musicFragment.getProgressBarProgress() +1000);
+            }
+
+            @Override
+            public void onFinish() {
+
+            }
+        }.start();
         mp.start();
     }
 

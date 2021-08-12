@@ -12,7 +12,14 @@
     <FrameLayout
         android:id="@+id/frame_lay"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent" >
 
+        <ImageView
+            android:id="@+id/imageView7"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleX="3"
+            android:scaleY="3"
+            app:srcCompat="@drawable/photo_1513151233558_d860c5398176" />
     </FrameLayout>
 </LinearLayout>

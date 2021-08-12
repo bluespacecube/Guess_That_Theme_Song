@@ -2,11 +2,14 @@ package com.thomasv.guessthatthemesong;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,6 +26,8 @@ public class MusicFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private ProgressBar pb;
 
     public MusicFragment() {
         // Required empty public constructor
@@ -60,5 +65,23 @@ public class MusicFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_music, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        pb = getView().findViewById(R.id.progressBar3);
+    }
+
+    public void setProgressBarMax(int max){
+        pb.setMax(max);
+    }
+
+    public void setProgressBar(int amount){
+        pb.setProgress(amount);
+    }
+
+    public int getProgressBarProgress(){
+        return pb.getProgress();
     }
 }
