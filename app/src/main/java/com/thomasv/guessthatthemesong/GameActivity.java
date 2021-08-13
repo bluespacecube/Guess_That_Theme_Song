@@ -73,20 +73,26 @@ public class GameActivity extends AppCompatActivity implements OptionsFragment.O
         getSupportFragmentManager().executePendingTransactions();
         MusicFragment musicFragment = (MusicFragment) getSupportFragmentManager().findFragmentByTag("MUSIC_FRAGMENT");
         int musicDuration = mp.getDuration();
+        boolean[] startTick = {true}; //needs to be a array so can be acessed in countdt's onTick()
         musicFragment.setProgressBarMax(musicDuration);
-        new CountDownTimer(musicDuration, 1000){
+        CountDownTimer countdt = new CountDownTimer(musicDuration, 1000){
 
             @Override
             public void onTick(long l) {
-                musicFragment.setProgressBar(musicFragment.getProgressBarProgress() +1000);
+                if(!startTick[0]){
+                    musicFragment.setProgressBar(musicFragment.getProgressBarProgress() +1000);
+                }
+                startTick[0] = false;
             }
 
             @Override
             public void onFinish() {
 
             }
-        }.start();
+        };
         mp.start();
+        countdt.start();
+        String s = questionsList.get(questionNum-1).getCorrectAnswer();
     }
 
     //Display the answer options
@@ -94,9 +100,12 @@ public class GameActivity extends AppCompatActivity implements OptionsFragment.O
         displayingChoices = true;
         //display multiple choices fragment
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        Question q = questionsList.get(questionNum-1);
         OptionsFragment optionsFragment = OptionsFragment.newInstance(questionsList.get(questionNum-1).getAnswerChoices());
+        Question q1 = questionsList.get(questionNum-1);
         ft.replace(R.id.frame_lay, optionsFragment, "OPTIONS_FRAGMENT");
         ft.commit();
+        Question sq1 = questionsList.get(questionNum-1);
         //start a countdown timer for choosing an option
         cdt = new CountDownTimer(10000,1000){
             public void onTick(long milisUntillFinished){
@@ -114,12 +123,13 @@ public class GameActivity extends AppCompatActivity implements OptionsFragment.O
                 //make a reference for the fragment
                 IncorrectAnswerFragment incorrectAnswerFragment = (IncorrectAnswerFragment) getSupportFragmentManager().findFragmentByTag("INCORRECT_ANSWER_FRAGMENT");
                 //display the answer to the user
-                incorrectAnswerFragment.setAnswer(questionsList.get(questionNum-1).getAnswerChoices()[questionsList.get(questionNum-1).getCorrectAnswerPos()]);
+                incorrectAnswerFragment.setAnswer(questionsList.get(questionNum-1).getCorrectAnswer());
                 //set the title to "Times Up!"
                 incorrectAnswerFragment.setToTimeUp();
 
             }
         };
+        Question q12 = questionsList.get(questionNum-1);
         cdt.start();
     }
 
@@ -128,7 +138,8 @@ public class GameActivity extends AppCompatActivity implements OptionsFragment.O
         //cancel timer
         cdt.cancel();
         //check if the answer selected is correct (via the buttons text)
-        if(option == questionsList.get(questionNum-1).getAnswerChoices()[questionsList.get(questionNum-1).getCorrectAnswerPos()]){
+        String correctAns = questionsList.get(questionNum-1).getCorrectAnswer();
+        if(option == correctAns){
             //display correct answer fragment
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.frame_lay, new CorrectAnswerFragment(), "CORRECT_ANSWER_FRAGMENT");
@@ -144,7 +155,7 @@ public class GameActivity extends AppCompatActivity implements OptionsFragment.O
             //make a reference for the fragment
             IncorrectAnswerFragment incorrectAnswerFragment = (IncorrectAnswerFragment) getSupportFragmentManager().findFragmentByTag("INCORRECT_ANSWER_FRAGMENT");
             //add the correct answer to the fragment
-            incorrectAnswerFragment.setAnswer(questionsList.get(questionNum-1).getAnswerChoices()[questionsList.get(questionNum-1).getCorrectAnswerPos()]);
+            incorrectAnswerFragment.setAnswer(correctAns);
         }
     }
 
@@ -175,8 +186,10 @@ public class GameActivity extends AppCompatActivity implements OptionsFragment.O
     }
 
     private void releaseMusicPlayer(){
-        mp.stop();
-        mp.release();
+        if(mp != null){
+            mp.stop();
+            mp.release();
+        }
     }
 
 }

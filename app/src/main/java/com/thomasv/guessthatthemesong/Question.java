@@ -1,7 +1,7 @@
 package com.thomasv.guessthatthemesong;
 
 public class Question {
-    private String[] answerChoices;
+    private final String[] answerChoices;
     private String songFileName;
     private int correctAnswerPos;
 
@@ -16,8 +16,8 @@ public class Question {
         return answerChoices;
     }
 
-    public int getCorrectAnswerPos(){
-        return correctAnswerPos;
+    public String getCorrectAnswer(){
+        return answerChoices[correctAnswerPos];
     }
 
     public String getSongFileName(){

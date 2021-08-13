@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -81,12 +82,22 @@ public class OptionsFragment extends Fragment {
         optionb2.setOnClickListener(optionClicked);
         optionb3.setOnClickListener(optionClicked);
         optionb4.setOnClickListener(optionClicked);
-        List<String> options = Arrays.asList(getArguments().getStringArray(ARG_PARAM));
+        //add optionsn to a list then shuffle it
+        String[] sa = getArguments().getStringArray(ARG_PARAM);
+        List<String> options = new ArrayList<>();
+        for(int i = 0; i<sa.length; i++){
+            options.add(sa[i]);
+        }
         Collections.shuffle(options);
         optionb1.setText(options.get(0));
         optionb2.setText(options.get(1));
         optionb3.setText(options.get(2));
         optionb4.setText(options.get(3));
+        /**String[] options = getArguments().getStringArray(ARG_PARAM);
+        optionb1.setText(options[0]);
+        optionb2.setText(options[1]);
+        optionb3.setText(options[2]);
+        optionb4.setText(options[3]);**/
     }
 
     //called once the fragment is associated with its activity
