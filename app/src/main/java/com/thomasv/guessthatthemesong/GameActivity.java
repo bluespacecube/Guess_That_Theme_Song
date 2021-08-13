@@ -14,6 +14,7 @@ import android.view.Window;
 import android.widget.LinearLayout;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class GameActivity extends AppCompatActivity implements OptionsFragment.OnOptionClickedListener, IncorrectAnswerFragment.ContinueClickListener, CorrectAnswerFragment.ContinueClickListener{
 
@@ -42,6 +43,7 @@ public class GameActivity extends AppCompatActivity implements OptionsFragment.O
     private void loadQuestions(){
         questionsList.add(new Question(new String[] {"Channel 4 News", "Channel 5 News", "ITV News", "BBC News"}, "bbcnews", 3));
         questionsList.add(new Question(new String[] {"Family Guy", "The Simpsons", "Rick And Morty", "South Park"}, "thesimpsonsopening", 1));
+        Collections.shuffle(questionsList);
     }
 
     //Starts the game
