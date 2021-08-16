@@ -1,12 +1,16 @@
 package com.thomasv.guessthatthemesong;
 
+import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 /**
@@ -25,8 +29,14 @@ public class FinishFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    private ContinueClickListener listener;
+
     public FinishFragment() {
         // Required empty public constructor
+    }
+
+    public interface ContinueClickListener {
+        public void OnContinueClick();
     }
 
     /**
@@ -62,6 +72,32 @@ public class FinishFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_finish, container, false);
     }
+
+    //called once the fragment is associated with its activity
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        //check if Activity has implemented the OnOptionClicked listener
+        if (context instanceof FinishFragment.ContinueClickListener) {
+            listener = (FinishFragment.ContinueClickListener) context;
+        } else {
+            throw new ClassCastException(context.toString()
+                    + " must implement FinishFragmentFragment.ContinueClickListener");
+        }
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        Button continueb = getView().findViewById(R.id.finish_continue_button);
+        continueb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.OnContinueClick();
+            }
+        });
+    }
+
 
     public void setScore(int score){
         TextView tv = getView().findViewById(R.id.answer_textview2);

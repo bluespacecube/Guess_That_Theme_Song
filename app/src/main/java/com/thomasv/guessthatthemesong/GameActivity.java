@@ -1,22 +1,19 @@
 package com.thomasv.guessthatthemesong;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.app.AlertDialog;
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
 import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class GameActivity extends AppCompatActivity implements OptionsFragment.OnOptionClickedListener, IncorrectAnswerFragment.ContinueClickListener, CorrectAnswerFragment.ContinueClickListener{
+public class GameActivity extends AppCompatActivity implements OptionsFragment.OnOptionClickedListener, IncorrectAnswerFragment.ContinueClickListener, CorrectAnswerFragment.ContinueClickListener, FinishFragment.ContinueClickListener {
 
     private ArrayList<Question> questionsList = new ArrayList<>();
     private int questionNum = 1;
@@ -59,6 +56,7 @@ public class GameActivity extends AppCompatActivity implements OptionsFragment.O
     private void playQuestion(){
         //load question music playing fragment
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.setCustomAnimations(R.anim.slide_in_side,R.anim.fade_out);
         ft.replace(R.id.frame_lay, new MusicFragment(), "MUSIC_FRAGMENT");
         ft.commit();
         System.out.println("------------------- Question Started ------------------");
@@ -102,12 +100,10 @@ public class GameActivity extends AppCompatActivity implements OptionsFragment.O
         displayingChoices = true;
         //display multiple choices fragment
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        Question q = questionsList.get(questionNum-1);
+        ft.setCustomAnimations(R.anim.slide_in_side,R.anim.fade_out);
         OptionsFragment optionsFragment = OptionsFragment.newInstance(questionsList.get(questionNum-1).getAnswerChoices());
-        Question q1 = questionsList.get(questionNum-1);
         ft.replace(R.id.frame_lay, optionsFragment, "OPTIONS_FRAGMENT");
         ft.commit();
-        Question sq1 = questionsList.get(questionNum-1);
         //start a countdown timer for choosing an option
         cdt = new CountDownTimer(10000,1000){
             public void onTick(long milisUntillFinished){
@@ -120,7 +116,9 @@ public class GameActivity extends AppCompatActivity implements OptionsFragment.O
             @Override
             public void onFinish() {
                 //display incorrect answer fragment
-                getSupportFragmentManager().beginTransaction().replace(R.id.frame_lay, new IncorrectAnswerFragment(), "INCORRECT_ANSWER_FRAGMENT").commit();
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                ft.setCustomAnimations(R.anim.slide_in_bottom,R.anim.fade_out);
+                ft.replace(R.id.frame_lay, new IncorrectAnswerFragment(), "INCORRECT_ANSWER_FRAGMENT").commit();
                 getSupportFragmentManager().executePendingTransactions();
                 //make a reference for the fragment
                 IncorrectAnswerFragment incorrectAnswerFragment = (IncorrectAnswerFragment) getSupportFragmentManager().findFragmentByTag("INCORRECT_ANSWER_FRAGMENT");
@@ -131,7 +129,6 @@ public class GameActivity extends AppCompatActivity implements OptionsFragment.O
 
             }
         };
-        Question q12 = questionsList.get(questionNum-1);
         cdt.start();
     }
 
@@ -144,6 +141,7 @@ public class GameActivity extends AppCompatActivity implements OptionsFragment.O
         if(option == correctAns){
             //display correct answer fragment
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.setCustomAnimations(R.anim.slide_in_bottom,R.anim.fade_out);
             ft.replace(R.id.frame_lay, new CorrectAnswerFragment(), "CORRECT_ANSWER_FRAGMENT");
             ft.commit();
             //increment score
@@ -151,6 +149,7 @@ public class GameActivity extends AppCompatActivity implements OptionsFragment.O
         }else{
             //display incorrect answer fragment
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.setCustomAnimations(R.anim.slide_in_bottom,R.anim.fade_out);
             ft.replace(R.id.frame_lay, new IncorrectAnswerFragment(), "INCORRECT_ANSWER_FRAGMENT");
             ft.commit();
             getSupportFragmentManager().executePendingTransactions();
@@ -177,6 +176,7 @@ public class GameActivity extends AppCompatActivity implements OptionsFragment.O
         }else{
             //load the finish fragment
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.setCustomAnimations(R.anim.slide_in_top,R.anim.fade_out);
             ft.replace(R.id.frame_lay, new FinishFragment(), "FINISH_FRAGMENT");
             ft.commit();
             getSupportFragmentManager().executePendingTransactions();
@@ -194,4 +194,9 @@ public class GameActivity extends AppCompatActivity implements OptionsFragment.O
         }
     }
 
+    @Override
+    public void OnContinueClick() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
 }

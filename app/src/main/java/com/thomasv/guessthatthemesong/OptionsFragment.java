@@ -109,7 +109,7 @@ public class OptionsFragment extends Fragment {
             listener = (OptionsFragment.OnOptionClickedListener) context;
         } else {
             throw new ClassCastException(context.toString()
-                    + " must implement IncorrectAnswerFragment.ContinueClickListener");
+                    + " must implement OptionsFragment.OnOptionClickedListener");
         }
     }
 

@@ -93,7 +93,7 @@ public class CorrectAnswerFragment extends Fragment {
             listener = (CorrectAnswerFragment.ContinueClickListener) context;
         } else {
             throw new ClassCastException(context.toString()
-                    + " must implement IncorrectAnswerFragment.ContinueClickListener");
+                    + " must implement CorrectAnswerFragment.ContinueClickListener");
         }
     }
 
