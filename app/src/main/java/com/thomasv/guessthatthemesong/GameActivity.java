@@ -47,7 +47,7 @@ public class GameActivity extends AppCompatActivity implements OptionsFragment.O
     private void start(){
         System.out.println("------------------- Game Started ------------------");
         loadQuestions();
-        LinearLayout startll = (LinearLayout) findViewById(R.id.start_ll);
+        LinearLayout startll = findViewById(R.id.start_ll);
         startll.setVisibility(View.GONE);
         playQuestion();
     }
@@ -73,7 +73,7 @@ public class GameActivity extends AppCompatActivity implements OptionsFragment.O
         getSupportFragmentManager().executePendingTransactions();
         MusicFragment musicFragment = (MusicFragment) getSupportFragmentManager().findFragmentByTag("MUSIC_FRAGMENT");
         int musicDuration = mp.getDuration();
-        boolean[] startTick = {true}; //needs to be a array so can be acessed in countdt's onTick()
+        boolean[] startTick = {true}; //needs to be a array so can be accessed in countdt's onTick()
         musicFragment.setProgressBarMax(musicDuration);
         CountDownTimer countdt = new CountDownTimer(musicDuration, 1000){
 
@@ -106,11 +106,11 @@ public class GameActivity extends AppCompatActivity implements OptionsFragment.O
         ft.commit();
         //start a countdown timer for choosing an option
         cdt = new CountDownTimer(10000,1000){
-            public void onTick(long milisUntillFinished){
+            public void onTick(long milisUntilFinished){
                 //make a reference for the fragment
                 OptionsFragment optionsFragment = (OptionsFragment) getSupportFragmentManager().findFragmentByTag("OPTIONS_FRAGMENT");
                 //update its progress bar progress
-                optionsFragment.setProgressBar((10000 - (int) milisUntillFinished) / 1000);
+                optionsFragment.setProgressBar((10000 - (int) milisUntilFinished) / 1000);
             }
 
             @Override
@@ -138,7 +138,7 @@ public class GameActivity extends AppCompatActivity implements OptionsFragment.O
         cdt.cancel();
         //check if the answer selected is correct (via the buttons text)
         String correctAns = questionsList.get(questionNum-1).getCorrectAnswer();
-        if(option == correctAns){
+        if(option.equals(correctAns)){
             //display correct answer fragment
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.setCustomAnimations(R.anim.slide_in_bottom,R.anim.fade_out);

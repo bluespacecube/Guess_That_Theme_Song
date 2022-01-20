@@ -19,7 +19,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Guess That Theme Song"
+        android:text="@string/app_home_title"
         android:textAlignment="center"
         android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -35,19 +35,10 @@
         android:layout_margin="16dp"
         android:background="@drawable/button_shape"
         android:onClick="buttonClick"
-        android:text="Play!"
+        android:text="@string/play_button_text"
         android:textColor="#FFFFFF"
         android:textSize="20sp"
         tools:layout_editor_absoluteX="65dp"
         tools:layout_editor_absoluteY="203dp" />
-
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="0"
-        android:onClick="b"
-        android:text="Button"
-        android:visibility="visible" />
 
 </LinearLayout>
